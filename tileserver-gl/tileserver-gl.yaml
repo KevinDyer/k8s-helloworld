@@ -1,0 +1,25 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: tileserver-deployment
+spec:
+  replicas: 3 # tells deployment to run 2 pods matching the template
+  template: # create pods using pod definition in this template
+    metadata:
+      labels:
+        app: tileserver
+    spec:
+      containers:
+      - name: tileserver
+        image: klokantech/tileserver-gl:latest
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /data
+          name: tileserver-gl-data
+      volumes:
+      - name: tileserver-gl-data
+        gcePersistentDisk:
+          pdName: tileserver-gl-data
+          fsType: ext4
+          readOnly: true
