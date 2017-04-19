@@ -14,12 +14,3 @@ spec:
         image: klokantech/tileserver-gl:latest
         ports:
         - containerPort: 80
-        volumeMounts:
-        - mountPath: /data
-          name: tileserver-gl-data
-      volumes:
-      - name: tileserver-gl-data
-        gcePersistentDisk:
-          pdName: tileserver-gl-data
-          fsType: ext4
-          readOnly: true
