@@ -1,0 +1,61 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: nfs
+spec:
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    # FIXME: use the right IP
+    server: 64.137.206.200
+    path: "/opt/data"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: nfs
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: tileserver-app
+spec:
+  selector:
+    app: tileserver-app
+  ports:
+    - protocol: TCP
+      port: 80
+  type: NodePort
+---
+kind: Deployment
+apiVersion: apps/v1beta1
+metadata:
+  name: tileserver-app
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: tileserver-app
+    spec:
+      containers:
+      - name: tileserver-frontend
+        image: klokantech/tileserver-gl:latest
+        ports:
+        - containerPort: 80
+        volumeMounts:
+            # name must match the volume name below
+            - name: nfs
+              mountPath: "/data"
+      volumes:
+      - name: nfs
+        persistentVolumeClaim:
+          claimName: nfs

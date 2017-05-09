@@ -1,8 +1,0 @@
-{
-  "name": "k8s-helloworld",
-  "version": "1.0.0",
-  "main": "index.js",
-  "repository": "https://github.com/KevinDyer/k8s-helloworld.git",
-  "author": "Kevin Dyer <kevin.m.dyer@gmail.com>",
-  "license": "MIT"
-}
