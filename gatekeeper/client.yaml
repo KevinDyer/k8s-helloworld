@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: gatekeeper-client
 spec:
-  replicas: 100
+  replicas: 128
   template:
     metadata:
       labels:
