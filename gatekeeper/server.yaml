@@ -1,0 +1,30 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: gatekeeper-server
+spec:
+  selector:
+    app: gatekeeper-server
+  ports:
+    - protocol: TCP
+      port: 8080
+  type: NodePort
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: gatekeeper-server
+spec:
+  replicas: 1 # tells deployment to run 2 pods matching the template
+  template: # create pods using pod definition in this template
+    metadata:
+      labels:
+        app: gatekeeper-server
+        stage: test
+    spec:
+      containers:
+      - name: gatekeeper-server
+        image: kevindyer/gatekeeper-server:v1.1
+        env:
+        - name: PORT
+          value: "8080"
