@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: gatekeeper-client
 spec:
-  replicas: 1000
+  replicas: 100
   template:
     metadata:
       labels:
@@ -15,7 +15,7 @@ spec:
         image: kevindyer/gatekeeper-client:v1.3
         env:
         - name: SERVER_HOSTNAME
-          value: "http://gatekeeper-server:8080"
+          value: "http://gatekeeper-server"
         volumeMounts:
         - name: client-storage
           mountPath: /opt/data

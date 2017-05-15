@@ -17,10 +17,6 @@
     interval = setInterval(sendHostname, 5000);
   });
 
-  socket.on('connect_error', (err) => {
-    console.log('Connect Error', err, process.env.SERVER_HOSTNAME);
-  });
-
   socket.on('disconnect', () => {
     console.log('Disonnected');
     clearInterval(interval);
