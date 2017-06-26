@@ -1,27 +1,26 @@
 kind: PersistentVolume
 apiVersion: v1
 metadata:
-  name: nfs
+  name: tileserver-data
 spec:
   capacity:
-    storage: 50Gi
+    storage: 64Gi
   accessModes:
-    - ReadWriteMany
+    - ReadOnlyMany
   nfs:
-    # FIXME: use the right IP
-    server: 64.137.206.200
-    path: "/opt/data"
+    server: cac-node-4.kevinmdyer.com
+    path: "/opt/data/maps"
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: nfs
+  name: tileserver-data
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadOnlyMany
   resources:
     requests:
-      storage: 50Gi
+      storage: 64Gi
 ---
 kind: Service
 apiVersion: v1
@@ -40,7 +39,7 @@ apiVersion: apps/v1beta1
 metadata:
   name: tileserver-app
 spec:
-  replicas: 10
+  replicas: 8
   template:
     metadata:
       labels:
@@ -52,10 +51,9 @@ spec:
         ports:
         - containerPort: 80
         volumeMounts:
-            # name must match the volume name below
-            - name: nfs
+            - name: tileserver-data
               mountPath: "/data"
       volumes:
-      - name: nfs
+      - name: tileserver-data
         persistentVolumeClaim:
-          claimName: nfs
+          claimName: tileserver-data
